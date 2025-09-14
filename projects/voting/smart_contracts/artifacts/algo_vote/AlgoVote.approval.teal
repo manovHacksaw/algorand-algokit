@@ -1,0 +1,42 @@
+#pragma version 10
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    // smart_contracts/algo_vote/contract.algo.ts:3
+    // export class AlgoVote extends Contract {
+    txn NumAppArgs
+    bz main_bare_routing@6
+    pushbytes 0x2c70340b // method "getProposal()string"
+    txna ApplicationArgs 0
+    match main_getProposal_route@3
+
+main_after_if_else@10:
+    // smart_contracts/algo_vote/contract.algo.ts:3
+    // export class AlgoVote extends Contract {
+    pushint 0 // 0
+    return
+
+main_getProposal_route@3:
+    // smart_contracts/algo_vote/contract.algo.ts:4
+    // getProposal(): string{
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    pushbytes 0x151f7c7500125468697320697320612070726f706f73616c
+    log
+    pushint 1 // 1
+    return
+
+main_bare_routing@6:
+    // smart_contracts/algo_vote/contract.algo.ts:3
+    // export class AlgoVote extends Contract {
+    txn OnCompletion
+    bnz main_after_if_else@10
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    pushint 1 // 1
+    return
